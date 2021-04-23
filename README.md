@@ -4,10 +4,9 @@ Projet qui consiste à réaliser un CRUD avec l'api Sharepoint en tant qu'API Re
 
 ## Outils utilisés
 
-Postman
-React avec TypeScript
-Axios
-SASS
+- Postman
+- Axios
+- Node-SASS
 
 ## Lancer le projet
 
