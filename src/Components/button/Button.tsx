@@ -4,19 +4,25 @@ import './Button.scss'
 
 interface IProps {
     name: string,
-
+    type ?: any,
+    send: any,
 }
 
 export default function Button(
     {
-        name
+        name,
+        type,
+        send
     }: IProps) {
 
     return (
-        <div>
-            <button className="button">
+
+            <button
+                onClick={send}
+                type={type}
+                className="button">
                 {name}
             </button>
-        </div>
+
     )
 }

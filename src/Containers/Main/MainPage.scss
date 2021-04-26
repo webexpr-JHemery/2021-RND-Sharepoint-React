@@ -3,9 +3,39 @@
   justify-content: center;
   background-color: #44b898;
 
-    &__title {
-      margin-top: 50px;
-      margin-bottom: 50px;
-      color: #ffff;
-    }
+  &__title {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    color: #ffff;
+  }
+}
+
+.infos-section {
+  max-width: 1600px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  h1 {
+    text-align: center;
+  }
+
+}
+
+.add-section {
+  margin-top: 5rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  &__inputs {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__button {
+    margin-top: 1em;
+    text-align: center;
+  }
 }
