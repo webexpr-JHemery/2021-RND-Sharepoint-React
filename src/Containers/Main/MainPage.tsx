@@ -5,15 +5,13 @@ import {Commissions} from "../../Models/Commissions";
 import CommissionAPI from "../../Services/CommissionAPI";
 import CommissionsThead from "../../Components/CommissionsTable/CommissionsThead/CommissionsThead";
 import CommissionsTbody from "../../Components/CommissionsTable/CommissionsTbody/CommissionsTbody";
-import Input from "../../Components/input/Input";
 
 
 export default function MainPage() {
 
 
-
     const [commissions, getCommissions] = useState<Commissions[]>([])
-    const [inputValue, setInputValue] = useState<any>()
+    const [inputValue, setInputValue] = useState<string>("")
 
 
     useEffect(() => {
@@ -27,13 +25,6 @@ export default function MainPage() {
         fetchCommissions()
     }, [])
 
-    const handleChange = (e: any) => {
-        const {name, value} = e.target;
-        setInputValue({
-            ...inputValue,
-            [name]: value,
-        })
-    }
 
     const submitData = async () => {
         await CommissionAPI.addList('Commission', inputValue)
@@ -71,11 +62,14 @@ export default function MainPage() {
             <div className="add-section">
                 <div className="add-section__inputs">
                     <form>
-                        <Input
-                            name="title"
-                            placeholder="Titre"
-                            onSearch={(value) => setInputValue(value) } />
+                        <input
+                            name="nom"
+                            type="text"
+                            value={inputValue}
+                            onChange={e => setInputValue(e.target.value)}
+                        />
                     </form>
+                    {inputValue}
                 </div>
 
 
