@@ -5,7 +5,7 @@ import {Commissions} from "../../Models/Commissions";
 import CommissionAPI from "../../Services/CommissionAPI";
 import CommissionsThead from "../../Components/CommissionsTable/CommissionsThead/CommissionsThead";
 import CommissionsTbody from "../../Components/CommissionsTable/CommissionsTbody/CommissionsTbody";
-
+import {sp} from "@pnp/sp-commonjs";
 
 export default function MainPage() {
 
@@ -17,7 +17,9 @@ export default function MainPage() {
     useEffect(() => {
         const fetchCommissions = async () => {
             try {
-                getCommissions(await CommissionAPI.getList('Commission'))
+                sp.web.select('Title').get().then((w: any) => {
+                    console.log(JSON.stringify(w, null, 4))
+                })
             } catch (e) {
                 console.log(e)
             }
@@ -27,7 +29,11 @@ export default function MainPage() {
 
 
     const submitData = async () => {
-        await CommissionAPI.addList('Commission', inputValue)
+        await CommissionAPI.addItems('Commission', inputValue)
+    }
+
+    const deleteData = async () => {
+        await CommissionAPI.deleteItems('Commission', '43')
     }
 
 
@@ -42,6 +48,7 @@ export default function MainPage() {
                 <table>
                     <thead>
                     <tr>
+                        <CommissionsThead title='ID'/>
                         <CommissionsThead title='Titre de la commission'/>
                         <CommissionsThead title='Date de la commission'/>
                         <CommissionsThead title='Lieu'/>
@@ -51,6 +58,7 @@ export default function MainPage() {
                     {commissions.map((commission, key) => {
                         return <CommissionsTbody
                             key={key}
+                            id={commission.id}
                             name={commission.title}
                             date={commission.date}
                             location={commission.place}
@@ -79,6 +87,12 @@ export default function MainPage() {
                         name="Ajouter une commission"
                         send={submitData}
                     />
+                    <Button
+                    type="submit"
+                    name="Supprimer une commission"
+                    send={deleteData}
+                />
+
                 </div>
             </div>
         </div>
