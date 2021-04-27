@@ -5,6 +5,9 @@ import { SPFetchClient } from "@pnp/nodejs-commonjs";
 
 sp.setup({
     sp: {
+        headers: {
+            Accept: "application/json;odata=verbose",
+        },
         fetchClientFactory: () => {
             return new SPFetchClient(
                 "https://webexprcne.sharepoint.com/sites/bnpp-cpr-2",
