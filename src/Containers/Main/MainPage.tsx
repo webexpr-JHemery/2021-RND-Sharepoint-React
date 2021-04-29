@@ -5,28 +5,24 @@ import {Commissions} from "../../Models/Commissions";
 import CommissionAPI from "../../Services/CommissionAPI";
 import CommissionsThead from "../../Components/CommissionsTable/CommissionsThead/CommissionsThead";
 import CommissionsTbody from "../../Components/CommissionsTable/CommissionsTbody/CommissionsTbody";
-import {sp} from "@pnp/sp-commonjs";
+
+
 
 export default function MainPage() {
-
-
-    const [commissions, getCommissions] = useState<Commissions[]>([])
+    const [commissions, setCommissions] = useState<Commissions[]>([])
     const [inputValue, setInputValue] = useState<string>("")
 
 
     useEffect(() => {
         const fetchCommissions = async () => {
             try {
-                sp.web.select('Title').get().then((w: any) => {
-                    console.log(JSON.stringify(w, null, 4))
-                })
+               setCommissions(await CommissionAPI.getList('Commission'))
             } catch (e) {
                 console.log(e)
             }
         }
         fetchCommissions()
     }, [])
-
 
     const submitData = async () => {
         await CommissionAPI.addItems('Commission', inputValue)
@@ -55,7 +51,7 @@ export default function MainPage() {
                     </tr>
                     </thead>
 
-                    {commissions.map((commission, key) => {
+                    {commissions && commissions.map((commission, key) => {
                         return <CommissionsTbody
                             key={key}
                             id={commission.id}
@@ -79,8 +75,6 @@ export default function MainPage() {
                     </form>
                     {inputValue}
                 </div>
-
-
                 <div className="add-section__button">
                     <Button
                         type="submit"
@@ -88,10 +82,10 @@ export default function MainPage() {
                         send={submitData}
                     />
                     <Button
-                    type="submit"
-                    name="Supprimer une commission"
-                    send={deleteData}
-                />
+                        type="submit"
+                        name="Supprimer une commission"
+                        send={deleteData}
+                    />
 
                 </div>
             </div>

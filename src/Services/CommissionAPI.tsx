@@ -1,28 +1,39 @@
 import axios from "axios";
 import {Commissions} from "../Models/Commissions";
-import { sp } from "@pnp/sp-commonjs";
-import { SPFetchClient } from "@pnp/nodejs-commonjs";
+import { sp } from "@pnp/sp/presets/all";
 
 sp.setup({
     sp: {
         headers: {
-            Accept: "application/json;odata=verbose",
+            Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5PbzNaRHJPRFhFSzFqS1doWHNsSFJfS1hFZyIsImtpZCI6Im5PbzNaRHJPRFhFSzFqS1doWHNsSFJfS1hFZyJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvd2ViZXhwcmNuZS5zaGFyZXBvaW50LmNvbUBhMmZmYmY1Zi0zNTk2LTQ3MzQtYWRlOC1iZGQwODk3ZjY4OWQiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAYTJmZmJmNWYtMzU5Ni00NzM0LWFkZTgtYmRkMDg5N2Y2ODlkIiwiaWF0IjoxNjE5Njk3NjEzLCJuYmYiOjE2MTk2OTc2MTMsImV4cCI6MTYxOTc4NDMxMywiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEBhMmZmYmY1Zi0zNTk2LTQ3MzQtYWRlOC1iZGQwODk3ZjY4OWQiLCJuYW1laWQiOiJhODQwNTk4Zi1lYzIyLTRiNmEtYWYwMy1mNjI5NTZkYzdlYTdAYTJmZmJmNWYtMzU5Ni00NzM0LWFkZTgtYmRkMDg5N2Y2ODlkIiwib2lkIjoiOWNlNmUzZGQtY2QzMy00N2EwLTljZmEtMzMwZTIzMTcwMjU5Iiwic3ViIjoiOWNlNmUzZGQtY2QzMy00N2EwLTljZmEtMzMwZTIzMTcwMjU5IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.MNRd6pNMCA3yo825C9aC-_bzeRiyl-CI1_4ivdW3HFgB6n-65saufXRAgIpJy3uMmbH3CJXm74NxYvyrOodGSpJE1QMFlju2-SHmUFSGudjgQUj0_JYQOsx1KCcppjDZQBmFY976ASq88gVIuv90iyvMMXelgrsWHwbn87Y8WVloMneZe_tTUdFoF5f_jmcEvZQONb7ZVyAMYy8Q3hkt6SHig6vUhINl9z26VP31oxVfWC_ChzLKN2iieCfedJK3dZQCOwmdD0pk2sfm-24-VHJeGN23rpnWAUnSIBU7w2RO31QzCIRWK5ka2wkeBXb78siHM_d_HEEjuHWYGQOImQ',
+            Accept: "application/json;odata=nometadata",
         },
-        fetchClientFactory: () => {
-            return new SPFetchClient(
-                "https://webexprcne.sharepoint.com/sites/bnpp-cpr-2",
-                "a840598f-ec22-4b6a-af03-f62956dc7ea7" ,
-                "VBTl+fL78pebssidU4dn5YFjslGKOyeqZRocjAMLR2E=")
+        baseUrl: "https://webexprcne.sharepoint.com/sites/bnpp-cpr-2",
         }
-    }
 })
 
 
+
+
 async function getList(list: string) {
-    return sp.web.select('Title').get()
-        .then(w => {
-            console.log(JSON.stringify(w, null, 4))
+    return sp.web.lists.getByTitle(list).items.get()
+        .then((response: any) => {
+            return response.map((mapped: any) => new Commissions(mapped))
         })
+
+}
+
+function getListItems(list: string) {
+    return axios.get(`https://webexprcne.sharepoint.com/sites/bnpp-cpr-2/_api/web/lists/getbytitle('${list}')/items` , {
+        headers: {
+            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5PbzNaRHJPRFhFSzFqS1doWHNsSFJfS1hFZyIsImtpZCI6Im5PbzNaRHJPRFhFSzFqS1doWHNsSFJfS1hFZyJ9.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvd2ViZXhwcmNuZS5zaGFyZXBvaW50LmNvbUBhMmZmYmY1Zi0zNTk2LTQ3MzQtYWRlOC1iZGQwODk3ZjY4OWQiLCJpc3MiOiIwMDAwMDAwMS0wMDAwLTAwMDAtYzAwMC0wMDAwMDAwMDAwMDBAYTJmZmJmNWYtMzU5Ni00NzM0LWFkZTgtYmRkMDg5N2Y2ODlkIiwiaWF0IjoxNjE5Njk3NjEzLCJuYmYiOjE2MTk2OTc2MTMsImV4cCI6MTYxOTc4NDMxMywiaWRlbnRpdHlwcm92aWRlciI6IjAwMDAwMDAxLTAwMDAtMDAwMC1jMDAwLTAwMDAwMDAwMDAwMEBhMmZmYmY1Zi0zNTk2LTQ3MzQtYWRlOC1iZGQwODk3ZjY4OWQiLCJuYW1laWQiOiJhODQwNTk4Zi1lYzIyLTRiNmEtYWYwMy1mNjI5NTZkYzdlYTdAYTJmZmJmNWYtMzU5Ni00NzM0LWFkZTgtYmRkMDg5N2Y2ODlkIiwib2lkIjoiOWNlNmUzZGQtY2QzMy00N2EwLTljZmEtMzMwZTIzMTcwMjU5Iiwic3ViIjoiOWNlNmUzZGQtY2QzMy00N2EwLTljZmEtMzMwZTIzMTcwMjU5IiwidHJ1c3RlZGZvcmRlbGVnYXRpb24iOiJmYWxzZSJ9.MNRd6pNMCA3yo825C9aC-_bzeRiyl-CI1_4ivdW3HFgB6n-65saufXRAgIpJy3uMmbH3CJXm74NxYvyrOodGSpJE1QMFlju2-SHmUFSGudjgQUj0_JYQOsx1KCcppjDZQBmFY976ASq88gVIuv90iyvMMXelgrsWHwbn87Y8WVloMneZe_tTUdFoF5f_jmcEvZQONb7ZVyAMYy8Q3hkt6SHig6vUhINl9z26VP31oxVfWC_ChzLKN2iieCfedJK3dZQCOwmdD0pk2sfm-24-VHJeGN23rpnWAUnSIBU7w2RO31QzCIRWK5ka2wkeBXb78siHM_d_HEEjuHWYGQOImQ',
+            'Accept': 'application/json;odata=nometadata'
+        },
+    }).then((response) => {
+        return response.data.value.map((mapped: any) => new Commissions(mapped));
+    }).catch((error) => {
+        console.log(error);
+    });
 }
 
 async function addItems(list: string, titre?: string) {
@@ -65,6 +76,7 @@ async function deleteItems(list: string, itemid: string, titre?: string) {
 // eslint-disable-next-line
 export default {
     getList,
+    getListItems,
     addItems,
     deleteItems
 }
