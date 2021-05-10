@@ -5,6 +5,7 @@ import MainPage from "./Containers/Main/MainPage";
 function App() {
   return (
       <MainPage />
+
   );
 }
 

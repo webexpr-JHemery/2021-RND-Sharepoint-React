@@ -10,7 +10,11 @@ import CommissionsTbody from "../../Components/CommissionsTable/CommissionsTbody
 
 export default function MainPage() {
     const [commissions, setCommissions] = useState<Commissions[]>([])
-    const [inputValue, setInputValue] = useState<string>("")
+    const [inputValue, setInputValue] = useState<any>({
+        Title: "",
+        Place: '',
+    })
+
 
 
     useEffect(() => {
@@ -24,13 +28,20 @@ export default function MainPage() {
         fetchCommissions()
     }, [])
 
-    const submitData = async () => {
-        await CommissionAPI.addItems('Commission', inputValue)
+
+    const handleChange = (e: any) => {
+        const value = e.target.value
+        setInputValue({
+            ...inputValue,
+        [e.target.name]: value
+        });
     }
 
-    const deleteData = async () => {
-        await CommissionAPI.deleteItems('Commission', '43')
+    const submitData = async () => {
+        await CommissionAPI.addItems('Commission', inputValue.Title, inputValue.Place)
     }
+
+
 
 
     return (
@@ -67,13 +78,18 @@ export default function MainPage() {
                 <div className="add-section__inputs">
                     <form>
                         <input
-                            name="nom"
+                            name="Title"
                             type="text"
-                            value={inputValue}
-                            onChange={e => setInputValue(e.target.value)}
+                            value={inputValue.Title}
+                            onChange={handleChange}
+                        />
+                        <input
+                            name="Place"
+                            type="text"
+                            value={inputValue.Place}
+                            onChange={handleChange}
                         />
                     </form>
-                    {inputValue}
                 </div>
                 <div className="add-section__button">
                     <Button
@@ -81,12 +97,6 @@ export default function MainPage() {
                         name="Ajouter une commission"
                         send={submitData}
                     />
-                    <Button
-                        type="submit"
-                        name="Supprimer une commission"
-                        send={deleteData}
-                    />
-
                 </div>
             </div>
         </div>
