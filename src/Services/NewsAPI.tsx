@@ -1,5 +1,5 @@
 import axios from "axios";
-import {Commissions} from "../Models/Commissions";
+import {News} from "../Models/News";
 import {sp} from "@pnp/sp/presets/all";
 
 
@@ -15,7 +15,7 @@ sp.setup({
 
 async function getList(list: string) {
     return sp.web.lists.getByTitle(list).items.get().then((response: any) => {
-        return response.map((mapped: any) => new Commissions(mapped))
+        return response.map((mapped: any) => new News(mapped))
     })
 }
 

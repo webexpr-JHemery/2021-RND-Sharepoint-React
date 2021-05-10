@@ -1,26 +1,22 @@
 import React, {useEffect, useState} from "react";
 import "./MainPage.scss"
 import Button from "../../Components/button/Button";
-import {Commissions} from "../../Models/Commissions";
-import CommissionAPI from "../../Services/CommissionAPI";
-import CommissionsThead from "../../Components/CommissionsTable/CommissionsThead/CommissionsThead";
-import CommissionsTbody from "../../Components/CommissionsTable/CommissionsTbody/CommissionsTbody";
-
-
+import {News} from "../../Models/News";
+import NewsAPI from "../../Services/NewsAPI";
+import Search from "../../Components/search/search";
 
 export default function MainPage() {
-    const [commissions, setCommissions] = useState<Commissions[]>([])
+    const [news, setNews] = useState<News[]>([])
     const [inputValue, setInputValue] = useState<any>({
         Title: "",
         Place: '',
     })
 
 
-
     useEffect(() => {
         const fetchCommissions = async () => {
             try {
-               setCommissions(await CommissionAPI.getList('Commission'))
+                setNews(await NewsAPI.getList('News'))
             } catch (e) {
                 console.log(e)
             }
@@ -33,47 +29,43 @@ export default function MainPage() {
         const value = e.target.value
         setInputValue({
             ...inputValue,
-        [e.target.name]: value
+            [e.target.name]: value
         });
     }
 
     const submitData = async () => {
-        await CommissionAPI.addItems('Commission', inputValue.Title, inputValue.Place)
+        await NewsAPI.addItems('News', inputValue.Title, inputValue.Place)
     }
-
-
-
 
     return (
         <div className="container">
             <div className="header">
-                <h1 className="header__title">R&D Sharepoint React/Sharepoint</h1>
+                <div className="header__logo__title">
+                    <img className="header__logo" src="images/sharepoint_logo.png" alt=""/>
+                    <h1 className="header__title">R&D Sharepoint React/Sharepoint</h1>
+
+                </div>
+                <Search name={"search"}
+                        width={"50%"}
+                />
             </div>
 
             <div className="infos-section">
                 <h1>Détails des commissions</h1>
                 <table>
-                    <thead>
-                    <tr>
-                        <CommissionsThead title='ID'/>
-                        <CommissionsThead title='Titre de la commission'/>
-                        <CommissionsThead title='Date de la commission'/>
-                        <CommissionsThead title='Lieu'/>
-                    </tr>
-                    </thead>
+                    {news && news.map((news, key) => {
+                        return <div
+                            key={key}>
+                            id={news.id}
+                            name={news.title}
+                            date={news.description}
+                            location={news.image}
+                        </div>
 
-                    {commissions && commissions.map((commission, key) => {
-                        return <CommissionsTbody
-                            key={key}
-                            id={commission.id}
-                            name={commission.title}
-                            date={commission.date}
-                            location={commission.place}
-                        />
+
                     })}
                 </table>
             </div>
-
             <div className="add-section">
                 <div className="add-section__inputs">
                     <form>
