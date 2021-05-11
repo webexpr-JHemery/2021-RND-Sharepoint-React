@@ -26,12 +26,17 @@
   }
 }
 
+.container {
+  padding-left: 150px;
+  padding-right: 150px;
+}
+
 .infos-section {
   max-width: 1600px;
-  margin: auto;
+  margin-top: 150px;
   display: flex;
   justify-content: center;
-  flex-direction: column;
+  flex-direction: row;
 
   h1 {
     text-align: center;
@@ -44,6 +49,21 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
+
+  > h1 {
+    text-align: center;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+
+    >input{
+      height: 30px;
+      margin-bottom: 15px;
+    }
+  }
 
   &__inputs {
     display: flex;

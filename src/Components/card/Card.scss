@@ -1,0 +1,41 @@
+.card {
+  height: 350px;
+  width: 350px;
+  border-radius: 20px;
+  margin-right: 35px;
+  box-shadow: 4px 16px 11px 1px rgba(135, 135, 135, 1);
+
+  &__infos {
+    padding-left: 10px;
+    background-color: white;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+  }
+
+  &__img {
+    height: 50%;
+    width: 100%;
+    object-fit: cover;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+  }
+
+  &__title {
+    margin-top: 0.6em;
+    margin-bottom: 0.6em;
+    font-size: 20px;
+  }
+
+  &__description {
+    font-size: 15px;
+  }
+
+  &__author {
+    font-size: 15px;
+    text-align: end;
+    padding-right: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+}
