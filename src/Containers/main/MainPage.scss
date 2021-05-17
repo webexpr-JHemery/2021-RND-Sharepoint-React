@@ -32,11 +32,12 @@
 }
 
 .infos-section {
-  max-width: 1600px;
+
   margin-top: 150px;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   flex-direction: row;
+  flex-wrap: wrap;
 
   h1 {
     text-align: center;

@@ -1,17 +1,19 @@
 import React, {useEffect, useState} from "react";
 import "./MainPage.scss"
 import Button from "../../Components/button/Button";
-import {News} from "../../Models/News";
-import NewsAPI from "../../Services/NewsAPI";
+import {News} from "../../models/News";
+import NewsAPI from "../../services/NewsAPI";
 import Search from "../../Components/search/search";
 import Card from "../../Components/card/Card";
 
+
 export default function MainPage() {
-    const [news, setNews] = useState<News[]>([])
+    const [news, setNews] = useState<News[]>()
     const [inputValue, setInputValue] = useState<any>({
         Title: '',
         Description: '',
     })
+
     const [selectedFile, setSelectedFile] = useState<any>()
 
 
@@ -26,7 +28,6 @@ export default function MainPage() {
         fetchCommissions()
     }, [])
 
-
     const handleChange = (e: any) => {
         const value = e.target.value
         setInputValue({
@@ -40,8 +41,8 @@ export default function MainPage() {
     }
 
     const submitData = async () => {
-        await NewsAPI.addItems('News', inputValue.Title, inputValue.Description)
-        await NewsAPI.addImg('News', 2, selectedFile)
+        const check = await NewsAPI.addItems('News', inputValue.Title, inputValue.Description)
+        await NewsAPI.addImg('News', check.data.Id, selectedFile)
     }
 
     return (
@@ -62,7 +63,7 @@ export default function MainPage() {
                     {news && news.map((news, key) => {
                         let image
                         news.image.map((img: any) => {
-                             image = img.ServerRelativeUrl
+                            image = img.ServerRelativeUrl
                             return image
                         })
                         return <Card
@@ -80,24 +81,28 @@ export default function MainPage() {
                     <div className="add-section__inputs">
                         <form className="add-section__form">
                             <input
-                                name="Title"
                                 type="text"
+                                name="Title"
                                 placeholder="Titre"
                                 value={inputValue.Title}
                                 onChange={handleChange}
                             />
                             <input
                                 placeholder="Description"
-                                name="Description"
                                 type="text"
+                                name="Description"
                                 value={inputValue.Description}
                                 onChange={handleChange}
+
                             />
                             <input
                                 type="file"
                                 name="file"
                                 onChange={handleFile}
+
                             />
+
+
                         </form>
                     </div>
                     <div className="add-section__button">

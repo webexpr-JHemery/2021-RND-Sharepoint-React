@@ -5,7 +5,7 @@ import './Button.scss'
 interface IProps {
     name: string,
     type ?: any,
-    send: any,
+    send?: any,
 }
 
 export default function Button(
