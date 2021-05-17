@@ -21,7 +21,6 @@ export default function Logged() {
     return (
         <Router>
             <Switch>
-                <PrivateRoute exact={true} path={path} component={LoginPage} />
                 <PrivateRoute exact={true} path={`${path}/home`} component={MainPage}/>
             </Switch>
         </Router>
